@@ -56,5 +56,5 @@ def github_hook_from_file_name(hook_file_name='-'):
     if hook_file_name == '-':
         return github_hook_from_file(sys.stdin)
     else:
-        with open(hook_file, 'r') as hook_file:
+        with open(hook_file_name, 'r') as hook_file:
             return github_hook_from_file(hook_file)

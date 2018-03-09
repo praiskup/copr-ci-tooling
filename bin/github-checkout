@@ -23,6 +23,7 @@ import sys
 import argparse
 
 from copr_ci_tooling.github.pull_request import github_checkout_pr
+from copr_ci_tooling.github.webhook import github_hook_from_file_name
 
 description = """\
 checkout proper github branch/ref
@@ -32,14 +33,30 @@ ap = argparse.ArgumentParser(
     description=description,
 )
 
-ap.add_argument(
-    "id",
+exclusive = ap.add_mutually_exclusive_group(required=True)
+
+exclusive.add_argument(
+    "--pr-id",
+    metavar='pr_id',
     help="pull request id"
 )
 
+exclusive.add_argument(
+    "--hook-file",
+    help="select file with github hook contents, use '-' for standard input"
+)
+
+
 def main():
     args = ap.parse_args()
-    github_checkout_pr(args.id)
+
+    if args.hook_file:
+        webhook = github_hook_from_file_name(args.hook_file)
+        if webhook.kind == 'pull_request':
+            github_checkout_pr(webhook.id)
+
+    else:
+        github_checkout_pr(args.pr_id)
 
 
 if __name__ == "__main__":
