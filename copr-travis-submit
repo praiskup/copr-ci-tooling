@@ -41,7 +41,7 @@ webhook_data()
     echo "  \"type\": \"$TYPE\","
     test $TYPE = PR && \
     echo "  \"pr_id\": \"$TRAVIS_PULL_REQUEST\","
-    echo "  \"git_hash\": \"$TRAVIS_COMMIT\""
+    echo "  \"git_hash\": \"$(git rev-parse HEAD)\""
     echo "}"
 }
 
