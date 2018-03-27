@@ -26,9 +26,8 @@ die () { echo >&2 "$*" ; exit 1 ; }
 # variables in Travis CI.
 
 TYPE=PR
-if test -n "$COPR_PR_WEBHOOK"; then
+if test -n "$TRAVIS_PULL_REQUEST"; then
     COPR_WEBHOOK=$COPR_PR_WEBHOOK
-    test -z "$TRAVIS_PULL_REQUEST" && die "\$TRAVIS_PULL_REQUEST unset"
 else
     COPR_WEBHOOK=$COPR_PUSH_WEBHOOK
     TYPE=PUSH
