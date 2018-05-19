@@ -1,0 +1,45 @@
+#! /bin/bash
+
+# Trigger the Copr build from pre-receive server-side git hook.
+
+# Copyright (C) 2018 Red Hat, Inc.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along
+# with this program; if not, write to the Free Software Foundation, Inc.,
+# 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
+# PLEASE HARDCODE $COPR_WEBHOOK variable e.g.:
+# COPR_WEBHOOK=https://copr.fedorainfracloud.org/webhooks/custom/19594/<uuid>/<PACKAGE_NAME>/
+
+set -e
+
+die ()  { echo >&2 "$0: FATAL: $*"; exit 1; }
+info () { echo >&2 "$0: $*"; }
+
+test -n "$COPR_WEBHOOK" || die "\$COPR_WEBHOOK var unset"
+
+# detect the last commit to build against;  to not waste resources
+last_hash=
+while read -r _ new _; do last_hash=$new;  done
+
+# Copr accepts only json content, hack.
+build_id=$(curl \
+    --silent \
+    -X POST \
+    -H "Content-Type: application/json" \
+    --data '{ "type": "PUSH", "git_hash": "'"$last_hash"'" }' \
+    "$COPR_WEBHOOK" || die "can't call the webhook"
+)
+
+info "Copr build for '$last_hash' submitted as"
+info "https://copr.fedorainfracloud.org/coprs/build/$build_id/"
