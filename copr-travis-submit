@@ -4,8 +4,8 @@
 # against existing PR, or against already pushed commit.  This script can
 # be HTTP downloaded, and work in isolation under Travis environment.  Note
 # that this script is prepared to be easily copy-pasted to any Travis CI enabled
-# GitHub project and that the original sources come from the
-# https://github.com/praiskup/copr-ci-tooling repository, so please submit
+# GitHub project and that the original script 'copr-travis-submit' comes from
+# the https://github.com/praiskup/copr-ci-tooling repository, so please submit
 # patches/issues against that project (and keep your copy in sync).
 
 # Copyright (C) 2019 Red Hat, Inc.
