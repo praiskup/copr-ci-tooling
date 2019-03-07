@@ -2,10 +2,15 @@
 
 # Trigger the package build in Fedora Copr.  The build in copr will build
 # against existing PR, or against already pushed commit.  This script can
-# be HTTP downloaded, and work in isolation under Travis environment.
+# be HTTP downloaded, and work in isolation under Travis environment.  Note
+# that this script is prepared to be easily copy-pasted to any Travis CI enabled
+# GitHub project and that the original sources come from the
+# https://github.com/praiskup/copr-ci-tooling repository, so please submit
+# patches/issues against that project (and keep your copy in sync).
 
-# Copyright (C) 2018 Red Hat, Inc.
-#
+# Copyright (C) 2019 Red Hat, Inc.
+
+
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
