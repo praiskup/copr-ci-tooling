@@ -78,7 +78,7 @@ while :; do
     echo "build status: $build_status"
 
     case $build_status in
-        *failed)    exit 1 ;;
-        *succeeded) exit 0 ;;
+        *failed|*canceled) exit 1 ;;
+        *succeeded)        exit 0 ;;
     esac
 done
