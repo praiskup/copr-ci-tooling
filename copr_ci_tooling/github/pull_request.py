@@ -21,6 +21,7 @@
 import os
 from subprocess import check_output, call
 
+REF = 'head'  # 'merge' can be preferred?
 
 def github_checkout_pr(pr_id, pr_remote="pull-requests"):
     null = open(os.devnull, 'w')
@@ -33,13 +34,13 @@ def github_checkout_pr(pr_id, pr_remote="pull-requests"):
         set_fetch = [
             'git', 'config', '--local',
             'remote.{0}.fetch'.format(pr_remote),
-            '+refs/pull/*/merge:refs/remotes/{0}/pr/*/merge'.format(pr_remote)
+            '+refs/pull/*/{1}:refs/remotes/{0}/pr/*/{1}'.format(pr_remote, REF)
         ]
         check_output(set_fetch)
 
     check_output(['git', 'fetch', pr_remote, '--prune'])
 
-    branch = '{0}/pr/{1}/merge'.format(pr_remote, pr_id)
+    branch = '{0}/pr/{1}/{3}'.format(pr_remote, pr_id, REF)
 
     check_output(['git', 'rev-parse', '--verify',
                   'remotes/{0}'.format(branch)])
