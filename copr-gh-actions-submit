@@ -51,7 +51,7 @@ webhook_data()
     echo "  \"type\": \"$TYPE\","
     test $TYPE = PR && \
     echo "  \"pr_id\": \"$PR_ID\","
-    echo "  \"git_hash\": \"$GITHUB_SHA\""
+    echo "  \"git_hash\": \"$(git rev-parse HEAD)\""
     echo "}"
 }
 
