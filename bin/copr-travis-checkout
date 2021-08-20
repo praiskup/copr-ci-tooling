@@ -36,5 +36,5 @@ else:
 output = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
 output = output.decode('ascii').strip()
 if output != data['git_hash']:
-    sys.stderr.write("git has doesn't match {0}\n".format(data['git_hash']))
+    sys.stderr.write("git SHA doesn't match {0}\n".format(data['git_hash']))
     sys.exit(1)
