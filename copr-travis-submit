@@ -67,12 +67,13 @@ echo "submitted build: https://copr.fedorainfracloud.org/coprs/build/$build_id/"
 
 set -o pipefail
 
-url="https://copr.fedorainfracloud.org/api/coprs/build_status/$build_id/"
-echo "checking $url"
+sed_search_state='s/.*"state":[[:space:]]*"\([a-z]*\)".*/\1/'
+url="https://copr.fedorainfracloud.org/api_3/build/$build_id/"
+echo "checking $url for the build status"
 
 while :; do
     sleep 30
-    output=$(curl -sS --fail "$url" | grep status)
+    output=$(curl -sS --fail "$url" | sed "$sed_search_state")
     eval "set -- $output"
     build_status=${2//,/}
     echo "build status: $build_status"
