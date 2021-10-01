@@ -78,9 +78,7 @@ echo "checking $url for the build status"
 
 while :; do
     sleep 30
-    output=$(curl -sS --fail "$url" | sed "$sed_search_state")
-    eval "set -- $output"
-    build_status=${2//,/}
+    build_status=$(curl -sS --fail "$url" | sed "$sed_search_state")
     echo "build status: $build_status"
 
     case $build_status in
