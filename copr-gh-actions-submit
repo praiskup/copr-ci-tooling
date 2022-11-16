@@ -53,6 +53,7 @@ webhook_data()
     echo "  \"pr_id\": \"$PR_ID\","
     echo "  \"git_hash\": \"$(git rev-parse HEAD)\""
     echo "}"
+    echo
 }
 
 echo "submitting JSON data:"
