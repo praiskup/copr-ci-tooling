@@ -48,6 +48,7 @@ webhook_data()
     echo "  \"pr_id\": \"$TRAVIS_PULL_REQUEST\","
     echo "  \"git_hash\": \"$(git rev-parse HEAD)\""
     echo "}"
+    echo
 }
 
 echo "submitting JSON data:"
