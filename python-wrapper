@@ -23,6 +23,7 @@ absdir="$(dirname "$(readlink -f "$0")")"
 
 export PYTHONPATH="$absdir${PYTHONPATH+:$PYTHONPATH}"
 export PYTHON
+export PATH="$absdir${PATH+:$PATH}"
 
 find_prog ()
 {
