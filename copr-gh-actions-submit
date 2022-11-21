@@ -69,7 +69,9 @@ build_id=$(curl \
     "$COPR_WEBHOOK"
 )
 
-echo "submitted build: https://copr.fedorainfracloud.org/coprs/build/$build_id/"
+build_url="https://copr.fedorainfracloud.org/coprs/build/$build_id/"
+
+echo "submitted build: $build_url"
 
 set -o pipefail
 
@@ -80,7 +82,7 @@ echo "checking $url for the build status"
 while :; do
     sleep 30
     build_status=$(curl -sS --fail "$url" | sed "$sed_search_state")
-    echo "build status: $build_status"
+    echo "build $build_url status: $build_status"
 
     case $build_status in
         *failed|*canceled) exit 1 ;;
