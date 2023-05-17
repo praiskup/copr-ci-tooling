@@ -25,13 +25,22 @@ import subprocess
 import json
 
 data = {}
-with open(sys.argv[1]) as fp:
-    data = json.load(fp)
+try:
+    with open(sys.argv[1]) as fp:
+        data = json.load(fp)
+except OSError:
+    # For the manual re-triggers (copr package package) we "emulate"
+    # the PUSH event, but without a specific git hash.
+    data["type"] = "PUSH"
 
 if data['type'] == "PR":
     subprocess.check_call(['github-checkout', '--pr-id', data['pr_id']])
-else:
+elif "git_hash" in data:
+    # PUSH with a specific hash
     subprocess.check_call(['git', 'checkout', data['git_hash']])
+else:
+    # Manual re-trigger.  No need to check for matching hash.
+    sys.exit(0)
 
 output = subprocess.check_output(['git', 'rev-parse', 'HEAD'])
 output = output.decode('ascii').strip()
