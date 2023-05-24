@@ -35,7 +35,7 @@ except OSError:
 
 if data['type'] == "PR":
     subprocess.check_call(['github-checkout', '--pr-id', data['pr_id'],
-                           '--gith-hash', data['git_hash']])
+                           '--git-hash', data['git_hash']])
 elif "git_hash" in data:
     # PUSH with a specific hash
     subprocess.check_call(['git', 'checkout', data['git_hash']])
