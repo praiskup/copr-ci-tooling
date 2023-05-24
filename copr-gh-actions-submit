@@ -35,8 +35,11 @@ die () { echo >&2 "$*" ; exit 1 ; }
 
 PR_ID=$1
 
+REF=HEAD
 TYPE=PR
 if test -n "$PR_ID"; then
+    REF=refs/pull/$PR_ID
+    git fetch origin "+pull/$PR_ID/merge:$REF" --depth=1
     COPR_WEBHOOK=$COPR_PR_WEBHOOK
 else
     COPR_WEBHOOK=$COPR_PUSH_WEBHOOK
@@ -45,13 +48,14 @@ fi
 
 test -z "$COPR_WEBHOOK" && die "webhook unset"
 
+
 webhook_data()
 {
     echo "{"
     echo "  \"type\": \"$TYPE\","
     test $TYPE = PR && \
     echo "  \"pr_id\": \"$PR_ID\","
-    echo "  \"git_hash\": \"$(git rev-parse HEAD)\""
+    echo "  \"git_hash\": \"$(git rev-parse "$REF")\""
     echo "}"
     echo
 }
