@@ -46,6 +46,11 @@ exclusive.add_argument(
     help="select file with github hook contents, use '-' for standard input"
 )
 
+ap.add_argument(
+    "--git-hash",
+    help="checkout a specific git SHA, must be available in origin"
+)
+
 
 def main():
     args = ap.parse_args()
@@ -54,6 +59,9 @@ def main():
         webhook = github_hook_from_file_name(args.hook_file)
         if webhook.kind == 'pull_request':
             github_checkout_pr(webhook.id)
+
+    elif args.git_hash:
+        github_checkout_pr(args.pr_id, sha1=args.git_hash)
 
     else:
         github_checkout_pr(args.pr_id)

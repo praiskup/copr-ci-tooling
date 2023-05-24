@@ -23,7 +23,7 @@ from subprocess import check_output, call
 
 REF = 'merge'  # 'head' can be preferred?
 
-def github_checkout_pr(pr_id, pr_remote="pull-requests"):
+def github_checkout_pr(pr_id, pr_remote="pull-requests", sha1=None):
     null = open(os.devnull, 'w')
     cmd = ['git', 'config', '--get', 'remote.{0}.fetch'.format(pr_remote)]
     if not call(cmd, stderr=null, stdout=null) == 0:
@@ -38,11 +38,17 @@ def github_checkout_pr(pr_id, pr_remote="pull-requests"):
         ]
         check_output(set_fetch)
 
-    check_output(['git', 'fetch', pr_remote, '--prune'])
+    if sha1 is not None:
+        branch = "refs/remotes/{0}/pr-detached-{1}".format(pr_remote, pr_id)
+        check_output(["git", "fetch", pr_remote, "+" + sha1 + ":" + branch])
+        check_output(["git", "checkout", branch])
 
-    branch = '{0}/pr/{1}/{2}'.format(pr_remote, pr_id, REF)
+    else:
+        check_output(['git', 'fetch', pr_remote, '--prune'])
 
-    check_output(['git', 'rev-parse', '--verify',
-                  'remotes/{0}'.format(branch)])
+        branch = '{0}/pr/{1}/{2}'.format(pr_remote, pr_id, REF)
 
-    check_output(['git', 'checkout', branch])
+        check_output(['git', 'rev-parse', '--verify',
+                      'remotes/{0}'.format(branch)])
+
+        check_output(['git', 'checkout', branch])
