@@ -21,7 +21,7 @@
 import os
 from subprocess import check_output, call
 
-REF = 'merge'  # 'head' can be preferred?
+REF = 'head'
 
 def github_checkout_pr(pr_id, pr_remote="pull-requests", sha1=None):
     null = open(os.devnull, 'w')
