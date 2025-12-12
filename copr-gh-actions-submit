@@ -39,7 +39,7 @@ REF=HEAD
 TYPE=PR
 if test -n "$PR_ID"; then
     REF=refs/pull/$PR_ID
-    git fetch origin "+pull/$PR_ID/merge:$REF" --depth=1
+    git fetch origin "+pull/$PR_ID/head:$REF" --depth=1
     COPR_WEBHOOK=$COPR_PR_WEBHOOK
 else
     COPR_WEBHOOK=$COPR_PUSH_WEBHOOK
