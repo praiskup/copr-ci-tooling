@@ -77,6 +77,10 @@ build_url="https://copr.fedorainfracloud.org/coprs/build/$build_id/"
 
 echo "submitted build: $build_url"
 
+# set github workflow outputs
+echo "BUILD_ID=${build_id}" >> ${GITHUB_OUTPUT}
+echo "BUILD_URL=${build_url}" >> ${GITHUB_OUTPUT}
+
 set -o pipefail
 
 sed_search_state='s/.*"state":[[:space:]]*"\([a-z]*\)".*/\1/'
